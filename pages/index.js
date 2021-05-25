@@ -1,10 +1,13 @@
-import AppLayout from "../components/AppLayout";
+import axios from "axios";
+import Router from "next/router";
 import { Upload, message, Button } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
+import AppLayout from "../components/AppLayout";
+
 const { Dragger } = Upload;
 
-const fileList = [];
+const files = [];
 
 const props = {
   name: "file",
@@ -16,7 +19,7 @@ const props = {
       message.success(`${info.file.name} file uploaded successfully.`);
 
       const { _id } = info.file.response.data;
-      fileList.push(_id);
+      files.push(_id);
     } else if (status === "error") {
       message.error(`${info.file.name} file upload failed.`);
     }
@@ -25,7 +28,15 @@ const props = {
 
 const Home = () => {
   function analysis() {
-    alert(fileList);
+    axios
+      .post("http://127.0.0.1:5000/v1/analysis", {
+        email: "ghks0630@naver.com",
+        files,
+      })
+      .then((res) => {
+        const { _id } = res.data.data;
+        Router.push(`/result/${_id}`);
+      });
   }
 
   return (
