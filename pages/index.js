@@ -34,8 +34,10 @@ const Home = () => {
         files,
       })
       .then((res) => {
-        const { _id } = res.data.data;
-        Router.push(`/result/${_id}`);
+        message.success(`분석 요청 전송 완료.`);
+      })
+      .catch((err) => {
+        message.error(`분석 요청 전송 완료.`);
       });
   }
 
